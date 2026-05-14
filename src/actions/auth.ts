@@ -36,7 +36,7 @@ export async function register(formData: FormData) {
   return { success: true };
 }
 
-export async function login(formData: FormData) {
+export async function login(prevState: any, formData: FormData) {
   try {
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
