@@ -6,7 +6,8 @@ import { UserMenu } from '@/components/layout/UserMenu';
 import { auth } from '@/auth';
 
 export async function Navbar() {
-  const session = await auth();
+  let session = null;
+  try { session = await auth(); } catch (e) { console.error("Auth error:", e); }
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 md:px-6 flex h-16 items-center justify-between">
