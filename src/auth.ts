@@ -5,6 +5,12 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 
+// Force NextAuth to use the Vercel request headers instead of a misconfigured NEXTAUTH_URL
+if (process.env.NODE_ENV === 'production') {
+  delete process.env.NEXTAUTH_URL;
+  delete process.env.AUTH_URL;
+}
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   trustHost: true,
