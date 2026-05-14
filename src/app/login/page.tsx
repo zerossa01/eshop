@@ -7,7 +7,7 @@ import { login } from '@/actions/auth';
 import { Button } from '@/components/ui/button';
 
 export default function LoginPage() {
-  const [state, formAction] = useFormState(login as any, undefined);
+  const [state, formAction] = useFormState(login as any, { error: undefined } as any);
 
   return (
     <div className="container mx-auto px-4 py-24 flex items-center justify-center">
