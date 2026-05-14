@@ -54,6 +54,14 @@ export function UserMenu({ user }: { user: any }) {
               Dashboard
             </Button>
           </Link>
+          {user.role === 'ADMIN' && (
+            <Link href="/admin" onClick={() => setOpen(false)}>
+              <Button variant="ghost" className="w-full justify-start h-9 px-2 text-sm text-primary">
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Admin Panel
+              </Button>
+            </Link>
+          )}>
           <form action={logout} className="w-full">
             <Button variant="ghost" type="submit" className="w-full justify-start h-9 px-2 text-sm text-destructive hover:text-destructive hover:bg-destructive/10">
               <LogOut className="mr-2 h-4 w-4" />
