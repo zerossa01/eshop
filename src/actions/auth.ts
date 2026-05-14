@@ -38,7 +38,9 @@ export async function register(formData: FormData) {
 
 export async function login(formData: FormData) {
   try {
-    await signIn('credentials', Object.fromEntries(formData));
+    const email = formData.get('email') as string;
+    const password = formData.get('password') as string;
+    await signIn('credentials', { email, password, redirectTo: '/' });
   } catch (error: any) {
     if (error?.digest?.includes('NEXT_REDIRECT') || error?.message?.includes('NEXT_REDIRECT')) {
       throw error;
