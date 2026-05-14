@@ -1,101 +1,183 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element */
+import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
+import { Button } from '@/components/ui/button';
+import { ShieldCheck, Truck, RefreshCw, Headphones } from 'lucide-react';
 
-export default function Home() {
+export default async function Home() {
+  const categories = await prisma.category.findMany({ take: 4 });
+  const featuredProducts = await prisma.product.findMany({
+    take: 8,
+    include: { images: true }
+  });
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex flex-col gap-y-16 pb-16">
+      {/* Hero Section */}
+      <section className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center bg-muted/30 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent z-10" />
+        {/* Placeholder hero image */}
+        <div className="absolute inset-0 z-0">
+           <img 
+            src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2000" 
+            alt="Hero Background" 
+            className="w-full h-full object-cover"
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        
+        <div className="container relative z-20 flex flex-col items-start gap-6 px-4 md:px-6 mx-auto">
+          <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-sm font-medium text-primary">
+            New Summer Collection
+          </span>
+          <h1 className="text-5xl font-extrabold tracking-tight sm:text-6xl md:text-7xl max-w-2xl text-foreground">
+            Elevate Your <br/> Everyday Style
+          </h1>
+          <p className="max-w-[600px] text-lg text-muted-foreground md:text-xl">
+            Discover our carefully curated selection of premium products. Quality meets modern design for a lifestyle upgrade.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 mt-4">
+            <Button size="lg" className="h-12 px-8 text-base">
+              Shop Now
+            </Button>
+            <Button size="lg" variant="outline" className="h-12 px-8 text-base bg-background/50 backdrop-blur-md">
+              View Lookbook
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Trust Badges */}
+      <section className="container mx-auto px-4 md:px-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 py-10 border-y">
+          <div className="flex flex-col items-center text-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <Truck className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-sm">Free Shipping</h3>
+              <p className="text-xs text-muted-foreground mt-1">On orders over $100</p>
+            </div>
+          </div>
+          <div className="flex flex-col items-center text-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <RefreshCw className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-sm">30-Day Returns</h3>
+              <p className="text-xs text-muted-foreground mt-1">Hassle-free return policy</p>
+            </div>
+          </div>
+          <div className="flex flex-col items-center text-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <ShieldCheck className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-sm">Secure Payment</h3>
+              <p className="text-xs text-muted-foreground mt-1">100% secure checkout</p>
+            </div>
+          </div>
+          <div className="flex flex-col items-center text-center gap-3">
+            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+              <Headphones className="h-6 w-6" />
+            </div>
+            <div>
+              <h3 className="font-semibold text-sm">24/7 Support</h3>
+              <p className="text-xs text-muted-foreground mt-1">Dedicated customer service</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Category Navigation */}
+      <section className="container mx-auto px-4 md:px-6">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold tracking-tight">Shop by Category</h2>
+          <Link href="/categories" className="text-sm font-medium text-primary hover:underline">
+            View All &rarr;
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {categories.map((category) => (
+            <Link 
+              key={category.id} 
+              href={`/categories/${category.slug}`}
+              className="group relative overflow-hidden rounded-2xl aspect-[4/5] bg-muted"
+            >
+              <img
+                src={category.imageUrl || ''}
+                alt={category.name}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6">
+                <h3 className="text-xl font-bold text-white mb-1">{category.name}</h3>
+                <p className="text-sm text-white/80">Explore collection</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="container mx-auto px-4 md:px-6">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold tracking-tight">Trending Now</h2>
+          <Link href="/products" className="text-sm font-medium text-primary hover:underline">
+            Shop All &rarr;
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {featuredProducts.map((product) => (
+            <div key={product.id} className="group flex flex-col gap-4">
+              <Link href={`/products/${product.slug}`} className="relative aspect-square overflow-hidden rounded-xl bg-muted">
+                {product.images[0] && (
+                  <img
+                    src={product.images[0].url}
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                )}
+                <div className="absolute top-3 left-3 bg-white text-black text-xs font-bold px-2 py-1 rounded">
+                  New
+                </div>
+              </Link>
+              <div className="flex flex-col gap-1">
+                <h3 className="font-semibold text-lg hover:underline">
+                  <Link href={`/products/${product.slug}`}>
+                    {product.name}
+                  </Link>
+                </h3>
+                <p className="text-sm text-muted-foreground line-clamp-1">{product.description}</p>
+                <div className="flex items-center justify-between mt-2">
+                  <span className="font-bold text-lg">${product.price.toFixed(2)}</span>
+                  <Button variant="secondary" size="sm" className="rounded-full">Add to Cart</Button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="container mx-auto px-4 md:px-6">
+        <div className="bg-primary text-primary-foreground rounded-3xl p-8 md:p-16 text-center flex flex-col items-center justify-center gap-6">
+          <h2 className="text-3xl md:text-4xl font-bold max-w-xl">Join Our Newsletter & Get 15% Off</h2>
+          <p className="text-primary-foreground/80 max-w-md">
+            Subscribe to receive updates, access to exclusive deals, and more.
+          </p>
+          <form className="flex w-full max-w-md gap-2 mt-4">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              className="flex-1 rounded-md px-4 py-3 text-black focus:outline-none focus:ring-2 focus:ring-white"
+              required
+            />
+            <Button size="lg" variant="secondary" className="px-8 font-bold">
+              Subscribe
+            </Button>
+          </form>
+        </div>
+      </section>
     </div>
   );
 }
