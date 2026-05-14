@@ -38,16 +38,19 @@ export async function register(formData: FormData) {
 export async function login(formData: FormData) {
   try {
     await signIn('credentials', Object.fromEntries(formData));
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.digest?.includes('NEXT_REDIRECT') || error?.message?.includes('NEXT_REDIRECT')) {
+      throw error;
+    }
     if (error instanceof AuthError) {
       switch (error.type) {
         case 'CredentialsSignin':
           return { error: 'Invalid credentials.' };
         default:
-          return { error: 'Something went wrong.' };
+          return { error: 'Authentication error: ' + error.type };
       }
     }
-    throw error;
+    return { error: 'Server Error: ' + (error?.message || String(error)) };
   }
 }
 
