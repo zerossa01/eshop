@@ -1,9 +1,12 @@
 import Link from 'next/link';
-import { Search, Menu, User } from 'lucide-react';
+import { Search, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CartIcon } from '@/components/layout/CartIcon';
+import { UserMenu } from '@/components/layout/UserMenu';
+import { auth } from '@/auth';
 
-export function Navbar() {
+export async function Navbar() {
+  const session = await auth();
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 md:px-6 flex h-16 items-center justify-between">
@@ -36,10 +39,7 @@ export function Navbar() {
             <Search className="h-5 w-5" />
             <span className="sr-only">Search</span>
           </Button>
-          <Button variant="ghost" size="icon">
-            <User className="h-5 w-5" />
-            <span className="sr-only">Account</span>
-          </Button>
+          <UserMenu user={session?.user} />
           <CartIcon />
           <Button variant="ghost" size="icon" className="md:hidden">
             <Menu className="h-5 w-5" />
